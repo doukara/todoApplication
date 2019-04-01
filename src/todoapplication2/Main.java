@@ -30,10 +30,6 @@ class Do extends Thread{
     private String userName,passWord;
     Do obj;
 
-    public void fun(){
-        System.out.println("hello");
-
-    }
         void account() throws InterruptedException{
             
             EmailValidator email = EmailValidator.getInstance();
