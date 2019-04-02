@@ -1,4 +1,3 @@
-
 package todoapplication2;
 
 import java.util.ArrayList;
@@ -8,8 +7,6 @@ import java.util.Scanner;
 public class User {
     
 private String userName , passWord;
-
-
 Scanner input = new Scanner(System.in);
 ArrayList<String> contactInfo = new ArrayList<String>() ;
     
@@ -20,7 +17,7 @@ ArrayList<String> contactInfo = new ArrayList<String>() ;
         contactInfo.add(userName);
     }
     
-    void chekUserData(String passWord, String userName){
+    void chekUserData(String passWord, String userName) {
         this.passWord = passWord;
         this.userName = userName;
         if(contactInfo.get(0).contentEquals(passWord) && contactInfo.get(1).contentEquals(userName)){

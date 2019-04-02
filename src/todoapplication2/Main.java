@@ -13,22 +13,18 @@ public class Main {
     public static void main(String[] args) throws InterruptedException{
         Do obj = new Do();
         obj.displayMenu();
-        
-        //obj.account();
-        //obj.fun();
- 
     }
 }  
     
 class Do extends Thread{
 
-    ArrayList<String> contactInfo = new ArrayList<>() ;
-    ArrayList<String> List = new ArrayList<String>() ;
+    ArrayList<String> List = new ArrayList<String>();
     User user = new User();
-    Scanner input = new Scanner(System.in);
-    private boolean loopIstrue = true, taskDoesntexist = false, emailformat = true, passwordValid ;
-    private String userName,passWord;
     Do obj;
+    Scanner input = new Scanner(System.in);
+    private boolean loopIstrue = true, taskDoesntexist = false, emailformat, passwordformat ;
+    private String userName,passWord;
+    
 
         void account() throws InterruptedException{
             
@@ -36,25 +32,23 @@ class Do extends Thread{
             System.out.print("Add email: ");
             input.nextLine();
             String chekEmail = input.nextLine();
-
             boolean valid = email.isValid(chekEmail);
             if(valid == true ){
                 System.out.print("Add password: ");
                 passWord = input.nextLine(); 
-                String patt = "([0-9]{2,5})";
+                String patt = "([0-9]{5,10})";
                 Pattern p = Pattern.compile(patt);
                 Matcher m = p.matcher(passWord);
-                passwordValid = Pattern.matches(patt, passWord);
-                System.out.println(passwordValid);
-                if(passwordValid == true){
-                Thread.sleep(1000);
-                System.out.println("cong! registered successfully \n Now log in to your account ");
-                user.userData(chekEmail, passWord);
-                emailformat = true;
+                passwordformat = Pattern.matches(patt, passWord);
+                if(passwordformat == true){
+                    Thread.sleep(1000);
+                    System.out.println("cong! registered successfully \n Now log in to your account ");
+                    user.userData(chekEmail, passWord);
+                    emailformat = true;
                 }else
                 {
-                    System.out.println("Weak password please try again (Should be over than 2 char)");
-                    passwordValid = false;
+                    System.out.println("Weak password please try again (Should be over than 5 char)");
+                    passwordformat = false;
                 }
             }
             else{
@@ -64,28 +58,28 @@ class Do extends Thread{
             
         }
         
-        void creatAcount() throws InterruptedException {
-           
-            System.out.print("Enter a email: ");
-            userName = input.nextLine();
-            System.out.print("password: ");
-            passWord = input.nextLine();
-            Thread.sleep(1000);
-            System.out.println("cong! registered successfully \n Now log in to your account ");
-            user.userData(userName, passWord);
-       }
+//        void creatAcount() throws InterruptedException {
+//           
+//            System.out.print("Enter a email: ");
+//            userName = input.nextLine();
+//            System.out.print("password: ");
+//            passWord = input.nextLine();
+//            Thread.sleep(1000);
+//            System.out.println("cong! registered successfully \n Now log in to your account ");
+//            user.userData(userName, passWord);
+//       }
        
        void logIn(){
-           if(emailformat == true && passwordValid == true){
+           if(emailformat == true && passwordformat == true){
             System.out.print("Enter a email: ");
             userName = input.next();
-            System.out.print("Add password: ");
+            System.out.print("password: ");
             passWord = input.next();
             user.chekUserData(passWord, userName);
            }
        }
        
-       public void displayMenu() throws InterruptedException{
+       public void displayMenu(){
            
            while(loopIstrue){
             try{
@@ -117,7 +111,7 @@ class Do extends Thread{
                 }
        }
     
-       public void displayMenuOptions(){
+       public void displayMenuOptions() {
            while(loopIstrue){
            try{
                 System.out.print("What you want do now ? \n");
@@ -168,14 +162,8 @@ class Do extends Thread{
                System.out.println(val);
            System.out.println("-------------");
        }
-    
-       void TaskNotFoud(){
-           if(taskDoesntexist == false)
-               System.out.println("Error, Task not found please try again");
-       }
-
        
-       public void deletTask(){
+        void deletTask(){
            if(List.isEmpty())
                System.out.println("TODO LIST is empty");
            else{
@@ -193,5 +181,10 @@ class Do extends Thread{
                 }
                 TaskNotFoud();
             }
+       }
+       
+        void TaskNotFoud(){
+           if(taskDoesntexist == false)
+               System.out.println("Error, Task not found please try again");
        }
 }
