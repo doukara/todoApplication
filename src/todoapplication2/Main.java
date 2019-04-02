@@ -26,7 +26,7 @@ class Do extends Thread{
     ArrayList<String> List = new ArrayList<String>() ;
     User user = new User();
     Scanner input = new Scanner(System.in);
-    private boolean loopIstrue = true, taskDoesntexist = false, format = true ;
+    private boolean loopIstrue = true, taskDoesntexist = false, emailformat = true, passwordValid ;
     private String userName,passWord;
     Do obj;
 
@@ -34,38 +34,50 @@ class Do extends Thread{
             
             EmailValidator email = EmailValidator.getInstance();
             System.out.print("Add email: ");
-            //input.nextLine();
-            String chekEmail = input.next();
+            input.nextLine();
+            String chekEmail = input.nextLine();
+
             boolean valid = email.isValid(chekEmail);
             if(valid == true ){
                 System.out.print("Add password: ");
-                passWord = input.next(); 
+                passWord = input.nextLine(); 
+                String patt = "([0-9]{2,5})";
+                Pattern p = Pattern.compile(patt);
+                Matcher m = p.matcher(passWord);
+                passwordValid = Pattern.matches(patt, passWord);
+                System.out.println(passwordValid);
+                if(passwordValid == true){
                 Thread.sleep(1000);
                 System.out.println("cong! registered successfully \n Now log in to your account ");
                 user.userData(chekEmail, passWord);
-                format = true;
+                emailformat = true;
+                }else
+                {
+                    System.out.println("Weak password please try again (Should be over than 2 char)");
+                    passwordValid = false;
+                }
             }
             else{
                 System.out.println("Wrong format, check your email please ");
-                format = false;
+                emailformat = false;
             }
             
         }
         
         void creatAcount() throws InterruptedException {
            
-            System.out.print("Enter a name: ");
-            userName = input.next();
-            System.out.print("Add password: ");
-            passWord = input.next();
+            System.out.print("Enter a email: ");
+            userName = input.nextLine();
+            System.out.print("password: ");
+            passWord = input.nextLine();
             Thread.sleep(1000);
             System.out.println("cong! registered successfully \n Now log in to your account ");
             user.userData(userName, passWord);
        }
        
        void logIn(){
-           if(format == true){
-            System.out.print("Enter a name: ");
+           if(emailformat == true && passwordValid == true){
+            System.out.print("Enter a email: ");
             userName = input.next();
             System.out.print("Add password: ");
             passWord = input.next();
