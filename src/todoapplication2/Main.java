@@ -1,12 +1,13 @@
 package todoapplication2;
 
-import org.apache.commons.validator.routines.EmailValidator;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Scanner;
 import java.util.InputMismatchException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
+import org.apache.commons.validator.EmailValidator;
 
 public class Main {
 
@@ -24,30 +25,32 @@ class Do extends Thread{
     Scanner input = new Scanner(System.in);
     private boolean loopIstrue = true, taskDoesntexist = false, emailformat, passwordformat ;
     private String userName,passWord;
-    
+    int option;
 
         void account() throws InterruptedException{
             
             EmailValidator email = EmailValidator.getInstance();
             System.out.print("Add email: ");
             input.nextLine();
-            String chekEmail = input.nextLine();
-            boolean valid = email.isValid(chekEmail);
+            String userName = input.nextLine();
+            boolean valid = email.isValid(userName);
             if(valid == true ){
                 System.out.print("Add password: ");
                 passWord = input.nextLine(); 
-                String patt = "([0-9]{5,10})";
+                //regex
+                String patt = "((?=.*[0-9])(?=.*[a-z])(?=.*[A-z]).{5,10})";
                 Pattern p = Pattern.compile(patt);
                 Matcher m = p.matcher(passWord);
                 passwordformat = Pattern.matches(patt, passWord);
                 if(passwordformat == true){
                     Thread.sleep(1000);
                     System.out.println("cong! registered successfully \n Now log in to your account ");
-                    user.userData(chekEmail, passWord);
+                    user.userData(userName, passWord);
                     emailformat = true;
+                    logIn();
                 }else
                 {
-                    System.out.println("Weak password please try again (Should be over than 5 char)");
+                    System.out.println("Weak password you must mix with numbers and chars please try again \n (Should be over than 5 char)");
                     passwordformat = false;
                 }
             }
@@ -58,47 +61,49 @@ class Do extends Thread{
             
         }
         
-//        void creatAcount() throws InterruptedException {
-//           
-//            System.out.print("Enter a email: ");
-//            userName = input.nextLine();
-//            System.out.print("password: ");
-//            passWord = input.nextLine();
-//            Thread.sleep(1000);
-//            System.out.println("cong! registered successfully \n Now log in to your account ");
-//            user.userData(userName, passWord);
-//       }
-       
        void logIn(){
-           if(emailformat == true && passwordformat == true){
+            if(emailformat == true && passwordformat == true){
             System.out.print("Enter a email: ");
             userName = input.next();
-            System.out.print("password: ");
+            System.out.print("Password: ");
             passWord = input.next();
             user.chekUserData(passWord, userName);
+            
            }
-       }
+          else{
+                recalldisplayMenu();
+            }
+       }    
        
        public void displayMenu(){
-           
+           loopIstrue = true;
+           int option;
            while(loopIstrue){
             try{
                 System.out.println("What do you want to do ? ");
                 System.out.print("1. Add account  2. Log to your account 3. Exit \n > ");
-                int option = input.nextInt();
+                option = input.nextInt();
                 displayHomeOptions(option);                   
             }catch(Exception ex)
              {
-                System.out.println("Input not found try again (excption1)");
-                loopIstrue =false;
+                System.out.println("Input not found try again (Exception)");
+                recalldisplayMenu();
              }
            }
+           
        }
+       
+       //recall methode for just reset variables 
+        void recalldisplayMenu()
+        {
+            new Do().displayMenu();
+        }
        
        public void displayHomeOptions(int option) throws InterruptedException{
                 switch(option){
                     case 1 : 
-                        account();
+                    	account();
+                        break;
                     case  2 :
                         logIn(); 
                         break;
@@ -155,8 +160,11 @@ class Do extends Thread{
        }
         
        public void showTasks(){
-
-           System.out.println(List.size() + " TASKS FOR TODAY: ");
+           
+           
+           Date d = new Date();
+           SimpleDateFormat sdf = new SimpleDateFormat("dd-M-Y"); 
+           System.out.println(List.size() + " Tasks for today " + sdf.format(d));
            System.out.println("-------------");           
            for(String val : List)
                System.out.println(val);
@@ -187,4 +195,6 @@ class Do extends Thread{
            if(taskDoesntexist == false)
                System.out.println("Error, Task not found please try again");
        }
+        
+
 }

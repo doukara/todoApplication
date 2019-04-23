@@ -25,8 +25,11 @@ ArrayList<String> contactInfo = new ArrayList<String>() ;
             new Do().displayMenuOptions();
         }
         else
-            System.out.println("Wrong user name or password please try again");            
+            System.out.println("Wrong user name or password please try again"); 
+        
         }
+    
+
 
 }
     
